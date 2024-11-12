@@ -7,6 +7,10 @@ void clearConsole() {
 #ifdef _WIN32//means "if defined" and checks if a macro is defined when compiling. "_WIN32" will be defined on windows (both 32 and 64 bit).
 
 
+
+
+
+
     system("cls");
 #elif __linux__ || __APPLE__//"__linux__" will be defined on linux, and __APPLE__ will be defined in macOS.
     system("clear");
@@ -18,24 +22,24 @@ int main() {
 #define DISCOUNT_AGE 65
 #define LICENSE_AGE 16
 #define PURCHASE_AGE 18
-    //#define DISCOUNT 0.15f //I decided not to use the discount percentage as a definition, and instead make the discount checking branch to change the percentage of total price.
     //the reason we define these is to improve readability of our code - instead of using 1, 2, etc. in our code, each option used is a definition with immediately clear meaning.
     //defining these as chars instead of integers so the program is able to check any keyboard input against expected ones.
 #define MENU_BUY '1'
+#define MENU_STAT_LIST '1'
 #define MENU_APPLY_DISCOUNT '2'
 #define MENU_VIEW_STATS '3'
 #define MENU_EXIT '0'
     //for creating "pseudo-booleans" as integer variables (C doesn't support boolean variables natively).
+#define MAX_SALES 15
 #define TRUE 1
 #define FALSE 0
 
     //we can use unsigned because no negative values expected.
     unsigned short carsAvailable = 15, carsNeeded, carsSold = 0;
-    int menuChoiceValid = FALSE, userAge;
-    char menuChoice;
-    float totalSales = 0, discountMultiplier = 1;
-    //discount is expressed via multiplier variable that changes depending on eligibility, 1 being 100% normal price with no discount.
-    //this also lets us avoid using the "pseudo-boolean" variable giveDiscount.
+    int menuChoiceValid = FALSE, userAge = 18, salesCount = 0;
+    char menuChoice, customerNames[MAX_SALES][201];
+    //discount is expressed via multiplier variable that changes depending on eligibility, 1 being 100% normal price with no discount. this also lets us avoid using the "pseudo-boolean" variable giveDiscount.
+    float totalSales = 0, discountMultiplier = 1, sales[MAX_SALES];
 
     printf("Hello, beloved customer! Welcome to the car sales program.\n");
 
@@ -84,8 +88,10 @@ Sorry, menu choice invalid, please try again:
                 //checking if there are no cars left. in this version of car sales this condition will never be fulfilled because we declare carsAvailable = 15 right before this check.
                 if (carsAvailable < 1) {
                     printf(
-                        "I'm sorry, but there are no cars available in stock at the moment, please try again later.");
-                    return 0; //terminates the program early if there's no cars.
+                        "I'm sorry, but there are no cars available in stock at the moment.\n\nPress any key to return to main menu...\n");
+                    getchar();
+                    getchar();
+                    break;
                 }
                 printf(R"(*** BUY CARS ***
 
@@ -103,14 +109,26 @@ Please enter the amount:
                     break;
                 } //no 'else' required.
 
+                printf("Please enter your full name:\n");
+
+            //adding a " " before "%" avoids potential newline or space character that might be in the console's input buffer.
+            //%[^\n] will read every char from input until \n.
+                scanf(" %[^\n]", customerNames[salesCount]); //this will start at salesCount = 0.
+
+
                 float totalPrice = carsNeeded * CAR_PRICE * discountMultiplier;
                 totalSales += totalPrice;
-                carsSold += carsNeeded; //update totalSales and carsSold after sale.
+                sales[salesCount] = totalPrice; //record transaction price in the current position in the array.
+                carsSold += carsNeeded;
+                salesCount++; //update salesCount, totalSales and carsSold after sale.
                 carsAvailable -= carsNeeded;
+
+
                 printf(
                     "You have purchased %hd cars. The total cost is %.2f GBP. Thank you for your business!\n\nPress any key to return to main menu...\n",
                     carsNeeded, totalPrice);
             //to output 2 decimal points of the float only, we can use ".2" after % and before f.
+                discountMultiplier = 1; //reset discount status.
                 getchar();
                 getchar();
                 break;
@@ -167,9 +185,16 @@ Please enter your age:
 - Car Price:            -- %.2f GBP.
 - Total car sales:      -- %.2f GBP.
 
-Press any key to return to main menu...
+*** TRANSACTION LIST ***
+
 )",
                     carsAvailable, carsSold, CAR_PRICE, totalSales);
+                for (int i = 0; i < salesCount; i++) {
+                    printf(R"(#%d %s: %.2f GBP;
+)",
+                           i, customerNames[i], sales[i]);
+                }
+            printf("\n\nPress any key to return to main menu.\n");
                 getchar();
                 getchar();
                 break;

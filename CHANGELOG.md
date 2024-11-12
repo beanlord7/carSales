@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v0.6] - 12/11/24
+Week 6 update, featuring *arrays*.
+### Added
+- A two-dimensional array for storing of customer names.
+- An array to store each transaction amount.
+### Changed
+- Updated statistics menu to include a list of individual transactions.
+
 ## [v0.5] - 24/10/24
 Week 5 update, featuring *loops*.
 ### Added
