@@ -7,6 +7,7 @@ Week 6 update, featuring *arrays*.
 ### Added
 - A two-dimensional array for storing of customer names.
 - An array to store each transaction amount.
+- Compiled executable added to git.
 ### Changed
 - Updated statistics menu to include a list of individual transactions.
 
