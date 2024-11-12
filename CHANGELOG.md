@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [v0.3] - 17/10/24
+## [v.0.4] - 14/10/24
+Week 4 update,featuring *nested conditional statements*.
+### Added
+- Main menu.
+- Sales and stock statistics page.
+
+## [v0.3] - 14/10/24
 Week 3 update, featuring *selection constructs*.
 ### Added
 - Discount offer based on user's age.
