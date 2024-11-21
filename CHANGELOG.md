@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v0.7] - 14/11/24
+Week 7 update, featuring *more arrays*.
+### Added
+- Ability to purchase different car models, each having different stock amounts, prices.
+### Changed
+- Updated remaining stock statistics with remaining stock of each model.
+- Updated transaction history to include car model purchased and discount amount.
+
+
 ## [v0.6] - 12/11/24
 Week 6 update, featuring *arrays*.
 ### Added
@@ -41,5 +50,5 @@ This is the initial carSales project from **week 2**.
 - User input for purchased car amount.
 - Output of total cost and remaining stock.
 ### Additional features
-- git repository with github connection via SSH key.
+- git repository with GitHub connection via SSH key.
 - Initial README.md and CHANGELOG.md files.
