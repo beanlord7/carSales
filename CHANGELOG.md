@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v0.9] - 05/12/24
+Week 9 update, featuring *pointers and files*.
+### Added
+- Added a feedback menu that saves customer feedback into a file.
+### Changed
+- 
+
 ## [v0.8] - 28/11/24
 Week 8 update, featuring *functions*.
 ### Added

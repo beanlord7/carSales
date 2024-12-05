@@ -11,6 +11,7 @@
 #define MENU_STAT_LIST '1'
 #define MENU_CUSTOMER_INFO '2'
 #define MENU_VIEW_STATS '3'
+#define MENU_FEEDBACK '4'
 #define MENU_EXIT '0'
 //for creating "pseudo-booleans" as integer variables (C doesn't support boolean variables natively).
 #define MAX_SALES 20
@@ -22,9 +23,9 @@
 //VARIABLES
 
 //unsigned short where no negative values expected.
-unsigned short carChoice, carsSold = 0, carAmountPerSale[MAX_SALES], carsAvailable[] = {1, 23, 9, 4, 1, 10, 1}, userAge, carYearPerSale[MAX_SALES], menuChoiceValid = FALSE, carChoiceValid = FALSE, salesCount = 0;
+unsigned short carChoice, carsSold = 0, carAmountPerSale[MAX_SALES], carsAvailable[] = {1, 23, 9, 4, 1, 10, 1}, userAge, carYearPerSale[MAX_SALES], menuChoiceValid = FALSE, carChoiceValid = FALSE, feedbackAvailable = FALSE, salesCount = 0;
 
-char menuChoice, userName[201] = "N/A", customerNames[MAX_SALES][201];
+char menuChoice, userName[201] = "N/A", customerNames[MAX_SALES][201], feedback[1001];
 
 //discount is expressed via multiplier variable that changes depending on eligibility, 1 being 100% normal price with no discount. this also lets us avoid using the "pseudo-boolean" variable giveDiscount.
 float totalSales = 0, discountMultiplier = 1, sales[MAX_SALES], discountPerSale[MAX_SALES];
@@ -70,11 +71,13 @@ unsigned short inputUnsignedShort(char prompt[201]) {
     return userInput;
 } //user input of a single unsigned short.
 
-void enterToReturn() {//TODO: adapt function to accept a parameter for how many getchar() to contain.
+void enterToReturn(unsigned int chars) {
     printf("\n\nPress Enter to return to main menu...\n");
-    getchar();
-    getchar();
-} //Enter to return message + program pause until input.
+    do {
+        getchar();
+        chars--;
+    }while (chars > 1);
+} //Enter to return message + program pause until input. parameter determines how many getchar() functions to call - use more if program doesn't pause, less if multiple inputs are needed.
 
 void menuWelcome() {
     clearConsole(); //just to remove any compiler warnings.
@@ -83,7 +86,7 @@ void menuWelcome() {
 _|        _|    _|  _|    _|    _|        _|    _|  _|        _|        _|
 _|        _|_|_|_|  _|_|_|        _|_|    _|_|_|_|  _|        _|_|_|      _|_|
 _|        _|    _|  _|    _|          _|  _|    _|  _|        _|              _|
-  _|_|_|  _|    _|  _|    _|    _|_|_|    _|    _|  _|_|_|_|  _|_|_|_|  _|_|_| v0.8
+  _|_|_|  _|    _|  _|    _|    _|_|_|    _|    _|  _|_|_|_|  _|_|_|_|  _|_|_| v0.9
 
 Hello, beloved customer! Welcome to the Car Sales program.
 Please enter your personal details before making a purchase.
@@ -98,7 +101,7 @@ void menuBuy() {
 
 Please enter your details before making a purchase.
 (Main menu option [2]))");
-        enterToReturn();
+        enterToReturn(2);
         return;
     }
     printf(R"(*** BUY CARS ***
@@ -123,7 +126,7 @@ We currently have these models in stock:
         printf(
             "I'm sorry, but there are no more %s units available in stock at the moment.",
             carModelNames[carChoice]);
-        enterToReturn();
+        enterToReturn(2);
         return;
     }
     clearConsole();
@@ -138,7 +141,7 @@ How many of %s cars would you like to purchase?
         printf(
             "\nI'm sorry, but we only have %hd %s cars remaining in stock, please try again!",
             carsAvailable[carChoice], carModelNames[carChoice]);
-        enterToReturn();
+        enterToReturn(2);
         return;
     }
 
@@ -158,8 +161,22 @@ You have purchased %hu %s cars. The total cost is %.2f GBP. Thank you for your b
     //to output 2 decimal points of the float only, we can use ".2" after % and before f.
     totalSales += sales[salesCount]; //update total sales counter.
     salesCount++; //update the sale number for the next sale.
-    enterToReturn();
+    feedbackAvailable = TRUE;
+    enterToReturn(2);
 } //car purchase menu.
+
+void menuFeedback() {
+    if (feedbackAvailable == FALSE) {
+        printf(R"(*** LEAVE FEEDBACK ***
+
+Please enter your details and make a purchase before leaving feedback.
+(Main menu option [2], then [2]))");
+        enterToReturn(2);
+        return;
+    }
+    printf("*** LEAVE FEEDBACK ***\n\n\n");
+    inputStr("Please enter a short message to express your feedback:\n", feedback);
+}
 
 void fillSpace(char **string, int index, char *output) {
     unsigned int numberOfStrings = 0;
@@ -207,7 +224,7 @@ Press Enter to proceed to the transaction list.
                i + 1, customerNames[i], carModelPerSale[i], carAmountPerSale[i], sales[i],
                discountPerSale[i]);
     }
-enterToReturn();
+enterToReturn(1);
 }
 
 void menuMain() {
@@ -260,7 +277,8 @@ void menuCustomerInfo() {
 I'm sorry, but you have to be 16 years old or older to legally drive a car. The sale cannot be completed.)");
         userAge = 0;
         strcpy(userName, "N/A");
-        enterToReturn();
+        enterToReturn(2);
+        feedbackAvailable = FALSE;
         return;
     }
     if (userAge >= LICENSE_AGE && userAge < PURCHASE_AGE) {
@@ -270,7 +288,8 @@ I'm sorry, but at %d years old you cannot legally purchase a car by yourself. In
                userAge);
         userAge = 0;
         strcpy(userName, "N/A");
-        enterToReturn();
+        feedbackAvailable = FALSE;
+        enterToReturn(2);
         return;
     }
     if (userAge >= DISCOUNT_AGE) {
@@ -279,15 +298,17 @@ I'm sorry, but at %d years old you cannot legally purchase a car by yourself. In
 
 A 15%% senior discount has been applied!
 User info saved, please proceed to your purchase.)");
-        enterToReturn();
+        enterToReturn(2);
+        feedbackAvailable = FALSE;
         return;
     }
     discountMultiplier = 1;
+    feedbackAvailable = FALSE;
     printf(R"(*** CUSTOMER INFORMATION ***
 
 You are not eligible for a discount.
 User info saved, please proceed to your purchase.)");
-    enterToReturn();
+    enterToReturn(2);
 } //customer info recording menu.
 
 int main() {
@@ -308,6 +329,9 @@ int main() {
             case MENU_VIEW_STATS:
                 menuStatistics();
                 break;
+            // case MENU_FEEDBACK:
+            //     menuFeedback();
+            //     break;
             case MENU_EXIT:
                 clearConsole();
                 printf(R"(Thank you, bye!
