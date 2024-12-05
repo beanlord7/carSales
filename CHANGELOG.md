@@ -2,10 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v0.8] - 28/11/24
+Week 8 update, featuring *functions*.
+### Added
+- Added the required feature list to the git repo - updated with every release in FEATURELIST.md!
+- Added a new welcome screen featuring some lazy ASCII art!
+- Added a data array for car manufacture year.
+- Added a function to align two columns of text by inserting the correct empty space characters in between.
+### Changed
+- Completely restructured the program code into separate functions.
+- Removed some bloat and unnecessary variables.
 ## [v0.7] - 14/11/24
 Week 7 update, featuring *more arrays*.
 ### Added
-- Ability to purchase different car models, each having different stock amounts, prices.
+- Ability to, purchase different car models, each having different stock amounts, prices.
 ### Changed
 - Updated remaining stock statistics with remaining stock of each model.
 - Updated transaction history to include car model purchased and discount amount.
