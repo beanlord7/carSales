@@ -5,9 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [v0.9] - 05/12/24
 Week 9 update, featuring *pointers and files*.
 ### Added
-- Added a feedback menu that saves customer feedback into a file.
-### Changed
-- 
+- All data is now saved on a .csv file, allowing sales history, remaining stock and customer feedback to persist after carSales is closed.
+- Feedback menu that saves customer feedback into a file.
+- Additional user input validation.
+### Fixed
+- Fixed an issue with memory allocation that caused text to be misaligned in the statistics page.
+- Fixed a potential input buffer problem when using "Press Enter to continue..."
 
 ## [v0.8] - 28/11/24
 Week 8 update, featuring *functions*.
@@ -22,7 +25,7 @@ Week 8 update, featuring *functions*.
 ## [v0.7] - 14/11/24
 Week 7 update, featuring *more arrays*.
 ### Added
-- Ability to, purchase different car models, each having different stock amounts, prices.
+- Ability to purchase different car models, each having different stock amounts, prices.
 ### Changed
 - Updated remaining stock statistics with remaining stock of each model.
 - Updated transaction history to include car model purchased and discount amount.
