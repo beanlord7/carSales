@@ -1,7 +1,15 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-
+## [v1.0] - 15/12/24
+Week 10-12 update, v1.0 launch version.
+### Added
+- Car stock and transaction lists are now dynamically sorted and have proper alignment.
+- Ability to leave a 0-5 star rating with your review.
+### Changed
+- Adjusted parts of the program to more accurately reflect the project requirements laid out in FEATURELIST.md
+### Fixed
+- Fixed a memory overflow issue causing corruption of statistics data.
 ## [v0.9] - 05/12/24
 Week 9 update, featuring *pointers and files*.
 ### Added
